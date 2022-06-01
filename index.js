@@ -16,7 +16,9 @@ class Snake {
             x: 1,
             y: 0
         }
+        this.score = 0
     }
+
 
     draw() {
         for (let part of this.position) {
@@ -41,10 +43,7 @@ class Snake {
             if (this.velocity.y != 0) {
                 return el.y += this.velocity.y
             }
-
-
         }
-
     }
 
 }
@@ -53,9 +52,20 @@ class Snake {
 class Food {
     constructor() {
         this.position = {
-            x: 15,
-            y: 15
+            x: Math.floor(Math.random() * canvas.width - 1),
+            y: Math.floor(Math.random() * canvas.height - 1)
         }
+    }
+
+    draw() {
+        ctx.fillStyle = 'green'
+        ctx.fillRect(this.position.x, this.position.y, 10, 10)
+    }
+
+    disappear() {
+        snake.score++
+        this.position.x = Math.floor(Math.random() * canvas.width - 1)
+        this.position.y = Math.floor(Math.random() * canvas.height - 1)
     }
 }
 
@@ -63,7 +73,6 @@ let snake = new Snake()
 let food = new Food()
 
 window.addEventListener(('keydown'), ({ key }) => {
-    console.log(key);
     switch (key) {
         case ('ArrowUp' || 'w'):
             snake.velocity.x = 0
@@ -74,7 +83,6 @@ window.addEventListener(('keydown'), ({ key }) => {
             snake.velocity.y = 0
             break
         case ('ArrowRight' || 'd'):
-            console.log('d')
             snake.velocity.x = 1
             snake.velocity.y = 0
             break
@@ -92,12 +100,16 @@ window.addEventListener(('keydown'), ({ key }) => {
 function loop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    food.draw()
 
-    /*  snake.position.unshift({
-        x: snake.position[0].x + snake.velocity.x,
-        y: snake.position[0].y + snake.velocity.y
-    });
-    */
+    if (snake.position[0].x - food.position.x < 2
+        && snake.position[0].y - food.position.y < 2) {
+        food.disappear()
+    }
+
+
+
+
     snake.move()
     snake.draw()
     window.requestAnimationFrame(loop);
