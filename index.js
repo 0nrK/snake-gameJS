@@ -62,23 +62,23 @@ class Food {
 let snake = new Snake()
 let food = new Food()
 
-window.addEventListener(('keydown'), (key) => {
-    console.log(key)
+window.addEventListener(('keydown'), ({ key }) => {
+    console.log(key);
     switch (key) {
-        case 'w':
+        case ('ArrowUp' || 'w'):
             snake.velocity.x = 0
             snake.velocity.y = -1
             break
-        case 'a':
+        case ('ArrowLeft' || 'a'):
             snake.velocity.x = -1
             snake.velocity.y = 0
             break
-        case 'D':
+        case ('ArrowRight' || 'd'):
             console.log('d')
             snake.velocity.x = 1
             snake.velocity.y = 0
             break
-        case 's':
+        case ('ArrowDown' || 's'):
             snake.velocity.x = 0
             snake.velocity.y = 1
             break
